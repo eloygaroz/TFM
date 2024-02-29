@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eunomia-bpf-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eunomia-bpf
+  template:
+    metadata:
+      labels:
+        app: eunomia-bpf
+    spec:
+      containers:
+      - name: eunomia-bpf
+        image: ebpf_test:1.0
+        securityContext:
+          privileged: true
+        command: ["/bin/sh", "-c", "sleep infinity"]
+      volumes:
+      - name: fuse
+        hostPath:
+          path: /dev/fuse
+          type: CharDevice
+
