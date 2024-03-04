@@ -1,10 +1,17 @@
 Requisitos:
 WSL2, Docker Desktop y Minikube.
+
+
 Para instalar WSL2 puedes seguir este tutorial https://www.linkedin.com/pulse/step-procedure-install-wsl2-windows-run-ubuntu-using-arun-kl/
+
+
 Para instalar Docker Desktop lo puedes encontrar aquí https://docs.docker.com/desktop/install/windows-install/
+
+
 Para instalar Minikube en Windows puedes acceder a https://github.com/kubernetes/minikube/releases/latest/download/minikube-installer.exe
-Tras ejecutar el .exe de Minikube, accedemos a la consola de WSL y una vez ahí corremos ```minikube start```
-Con esto habremos terminado los preparativos.
+
+
+Tras ejecutar el .exe de Minikube, accedemos a la consola de WSL y una vez ahí corremos ```minikube start``` Con esto habremos terminado los preparativos.
  
 Pasos para ejecutar ptrace_example:
 1. Clonamos el repositorio usando: ```git clone https://github.com/eloygaroz/TFM```
