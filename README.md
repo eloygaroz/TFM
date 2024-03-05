@@ -30,24 +30,31 @@ Pasos para ejecutar ptrace_example:
 
    Si al correr el comando de arriba, sale este error:
 
-   ```ERROR: failed to solve: ubuntu:20.04: error getting credentials - err: fork/exec /usr/bin/docker-credential-desktop.exe: exec format error, out: `` ```
+   **ERROR: failed to solve: ubuntu:20.04: error getting credentials - err: fork/exec /usr/bin/docker-credential-desktop.exe: exec format error, out: ``**
 
    Deberemos de cambiar el archivo de ./docker/config.json de **credsStore** a **credStore**
    
 
-5. Cargamos la imagen en minikube: ```minikube image load ebpf_test:1.0```
-6. Realizamos el deployment usando el archivo .yaml: ```kubectl apply -f sidecar_deployment.yaml```
-7. Para comprobar que el deployment se ha realizado correctamente ejecutamos: ```kubectl get pods```. Deberíamos de obtener el resultado de abajo
+4. Cargamos la imagen en minikube: ```minikube image load ebpf_test:1.0```
+
+Si nos diera el error de **Exiting due to GUEST_IMAGE_LOAD** usaremos el siguiente workaround:
+
+```docker image save -o ebpf_test.tar ebpf_test:1.0```
+
+```minikube image load ebpf_test.tar```
+   
+5. Realizamos el deployment usando el archivo .yaml: ```kubectl apply -f sidecar_deployment.yaml```
+6. Para comprobar que el deployment se ha realizado correctamente ejecutamos: ```kubectl get pods```. Deberíamos de obtener el resultado de abajo
 
       ![image](https://github.com/eloygaroz/TFM/assets/62937614/37977fb5-7fd0-48ab-886a-d4139d509b8b)
   
-8. Abrimos la consola del sidecar ejecutando ```kubectl exec -it sidecar-bpf-deployment-5c87d954c-8twj6 -c ebpf-container -- /bin/sh```
+7. Abrimos la consola del sidecar ejecutando ```kubectl exec -it sidecar-bpf-deployment-5c87d954c-8twj6 -c ebpf-container -- /bin/sh```
 
     El código que aparece después de **sidecar-bpf-deployment**, en este caso **5c87d954c-8twj6**, deberá ser sustituido por el que tengamos.
 
-9. En esta consola, ejecutamos ```./ecc signal.c signal.h``` para compilar el programa y ```./ecli package.json``` para correrlo.
+8. En esta consola, ejecutamos ```./ecc signal.c signal.h``` para compilar el programa y ```./ecli package.json``` para correrlo.
 
-10. Abrimos la consola del contenedor principal ejecutando ```kubectl exec -it sidecar-bpf-deployment-5c87d954c-8twj6 -- /bin/sh``` en otra consola de wsl diferente.
+9. Abrimos la consola del contenedor principal ejecutando ```kubectl exec -it sidecar-bpf-deployment-5c87d954c-8twj6 -- /bin/sh``` en otra consola de wsl diferente.
 
 De nuevo, sustituyendo **5c87d954c-8twj6** por el código que tengamos.
 
