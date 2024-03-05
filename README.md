@@ -7,12 +7,20 @@ Para instalar WSL2 puedes seguir este tutorial https://www.linkedin.com/pulse/st
 
 Para instalar Docker Desktop lo puedes encontrar aquí https://docs.docker.com/desktop/install/windows-install/
 
+Para instalar Minikube y Kubectl correremos los siguientes comandos en la consola de WSL2:
 
-Para instalar Minikube en Windows puedes acceder a https://github.com/kubernetes/minikube/releases/latest/download/minikube-installer.exe
+```curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64```
 
+```chmod +x ./minikube```
 
-Tras ejecutar el .exe de Minikube, accedemos a la consola de WSL y una vez ahí corremos ```minikube start``` Con esto habremos terminado los preparativos.
- 
+```sudo mv ./minikube /usr/local/bin/```
+
+```minikube config set driver docker```
+
+```curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"``` 
+
+```sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl```
+
 Pasos para ejecutar ptrace_example:
 1. Clonamos el repositorio usando: ```git clone https://github.com/eloygaroz/TFM```
 2. Accedemos al repositorio clonado: ```cd /TFM```
