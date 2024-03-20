@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: execve-deployment 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eunomia-bpf
+  template:
+    metadata:
+      labels:
+        app: eunomia-bpf
+    spec:
+      shareProcessNamespace: true
+      containers:
+      - name: ubuntu-container
+        image: ubuntu:20.04 # Example primary container running nginx
+        command: ["/bin/sh", "-c", "sleep infinity"]
+      - name: ebpf-container # eunomia-bpf as the sidecar
+        image: execve_test:1.0
+        securityContext:
+          privileged: true
+          capabilities:
+            add: ["SYS_PTRACE","SYS_ADMIN"]
+        command: ["/bin/sh", "-c", "sleep infinity"]
+        volumeMounts:
+        - name: fuse
+          mountPath: /dev/fuse
+        - name: debugfs
+          mountPath: /sys/kernel/debug
+      volumes:
+      - name: fuse
+        hostPath:
+          path: /dev/fuse
+          type: CharDevice
+      - name: debugfs
+        hostPath:
+          path: /sys/kernel/debug
+
