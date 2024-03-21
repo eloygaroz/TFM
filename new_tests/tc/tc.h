@@ -1,0 +1,20 @@
+struct event {
+    int len;
+    int pkt_type;
+    int mark;
+    int queue_mapping;
+    int protocol;
+    int vlan_present;
+    int vlan_tci;
+    int vlan_proto;
+    int priority;
+    int ingress_ifindex;
+    int ifindex;
+    int tc_index;
+    int cb[5];
+    int hash;
+    int tc_classid;
+    int data;
+    int data_end;
+    int napi_id;
+};
