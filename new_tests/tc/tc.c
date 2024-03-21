@@ -19,8 +19,14 @@ struct {
 SEC("tc")
 int tc_ingress(struct __sk_buff *ctx)
 {
-    void *data_end = (void *)(__u64)ctx->data_end;
-    void *data = (void *)(__u64)ctx->data;
+    void *data_end = (void *)(long)ctx->data_end;
+    void *data = (void *)(long)ctx->data;
+    void *pkt_type = (void *)(long)ctx->pkt_type;
+    void *protocol = (void *)(long)ctx->protocol;
+    void *ingress_ifindex = (void *)(long)ctx->ingress_ifindex;
+    void *ifindex = (void *)(long)ctx->ifindex;
+
+    void *tc_index = (void *)(long)ctx->tc_index;
     struct ethhdr *l2;
     struct iphdr *l3;
     if (ctx->protocol != bpf_htons(ETH_P_IP))
@@ -38,6 +44,11 @@ int tc_ingress(struct __sk_buff *ctx)
     e = bpf_ringbuf_reserve(&rb, sizeof(*e), 0);
     if (e) {
         e->len = pkt_sz;
+        e->pkt_type = pkt_type;
+        e->protocol = protocol;
+        e->ingress_ifindex = ingress_ifindex;
+        e->ifindex = ifindex;
+	e->tc_index = tc_index;
         bpf_ringbuf_submit(e, 0);
         return TC_ACT_OK;
         }
