@@ -1,8 +1,8 @@
+
 #include "vmlinux.h"
 #include <bpf/bpf_helpers.h>
 #include "xdp.h"
-#include <bpf/bpf_tracing.h>
-#include <bpf/bpf_core_read.h>
+
 
 struct {
     __uint(type, BPF_MAP_TYPE_RINGBUF);
@@ -17,21 +17,19 @@ int xdp_pass(struct xdp_md* ctx) {
     void* data_meta = (void*)(long)ctx->data_meta;
     int pkt_sz = data_end - data;
     int meta_sz = data - data_meta;
+    struct ethhdr *eth = data;
+    if (data + sizeof(struct ethhdr) > data_end){
+        return XDP_DROP;
+    }
 
-    //size_t pid_tgid = bpf_get_current_pid_tgid();
-    // Reserve space in the ring buffer for an event
     struct event *e;
     e = bpf_ringbuf_reserve(&rb, sizeof(*e), 0);
     if (e) {
         e->pkt_size = pkt_sz;
-        e->meta_size = meta_sz;
-        e->ingress_ifindex = ctx->ingress_ifindex;
-        // Getting process ID and command name
-        //e->pid = pid_tgid >> 32;
-        //bpf_get_current_comm(&e->comm, sizeof(e->comm));
-        // Getting CPU core identifier
-        e->cpu_core = bpf_get_smp_processor_id();
-
+        e->in_ifce = ctx->ingress_ifindex;
+        //memcpy(e->h_dst, eth->h_dest, 6);
+        //memcpy(e->h_src, eth->h_source, 6);
+        e->h_proto = eth->h_proto;
         // Submit the event to the ring buffer
         bpf_ringbuf_submit(e, 0);
     }
@@ -40,4 +38,3 @@ int xdp_pass(struct xdp_md* ctx) {
 }
 
 char __license[] SEC("license") = "GPL";
-

@@ -1,9 +1,11 @@
 struct event {
     int pkt_size;         // Packet size
-    int meta_size;        // Size of metadata
-    int ingress_ifindex;  // Ingress interface index
-    int pid;              // Process ID
-    char comm[16]; // Command name of the process
-    int cpu_core;         // CPU core identifier
-    //int egress_ifindex;
-};
+    int in_ifce;  // Ingress interface index
+    //unsigned char h_dst[6];
+    //unsigned char h_src[6];
+    //__u32 src;
+    //__u32 dest;
+    __u16 type;
+    __be16 h_proto;
+
+}_attribute_((packed));

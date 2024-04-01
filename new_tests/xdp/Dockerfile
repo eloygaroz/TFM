@@ -7,6 +7,7 @@ RUN apt-get update \
 #RUN apt install -y clang-12 --install-suggests 
 # Copy your eBPF program source code
 COPY xdp.c .
+COPY xdp.h .
 RUN wget https://aka.pw/bpf-ecli -O ecli && chmod +x ecli
 RUN wget https://github.com/eunomia-bpf/eunomia-bpf/releases/latest/download/ecc -O ecc && chmod +x ecc
 #CMD ["./ecc","minimal.bpf.c"]
