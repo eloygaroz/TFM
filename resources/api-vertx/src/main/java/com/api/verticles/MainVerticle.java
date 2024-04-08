@@ -5,7 +5,6 @@ import com.api.handler.HealthCheckRestHandlerImpl;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.rxjava3.core.AbstractVerticle;
-import io.vertx.rxjava3.ext.web.Router;
 import io.vertx.rxjava3.ext.web.openapi.RouterBuilder;
 
 import static com.api.config.SharedConfig.DEFAULT_HOST;

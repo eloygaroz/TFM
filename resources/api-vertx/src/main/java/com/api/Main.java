@@ -5,6 +5,8 @@ import com.api.config.SharedConfig;
 import com.api.verticles.MainVerticle;
 import io.netty.channel.DefaultChannelId;
 import io.reactivex.rxjava3.core.Single;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.JsonObject;
@@ -33,7 +35,14 @@ public class Main {
         if (Utils.getEnv("VERTX_CONFIG_PATH") == null) {
             return Single.error(new IllegalStateException("Missing VERTX_CONFIG_PATH environment variable"));
         }
-        return ConfigRetriever.create(vertx).rxGetConfig();
+        return ConfigRetriever.create(vertx, generateConfigRetrieverOptions()).rxGetConfig();
+    }
+
+    private static ConfigRetrieverOptions generateConfigRetrieverOptions() {
+         return new ConfigRetrieverOptions().addStore(new ConfigStoreOptions()
+                .setType("file")
+                .setFormat("yaml")
+                .setConfig(new JsonObject().put("path", Utils.getEnv("VERTX_CONFIG_PATH"))));
     }
 
 }
