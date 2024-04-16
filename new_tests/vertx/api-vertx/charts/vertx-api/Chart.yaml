@@ -1,0 +1,4 @@
+apiVersion: v2
+name: vertx-api 
+description: Un chart para desplegar mi aplicación Java en Kubernetes
+version: 0.1.0
