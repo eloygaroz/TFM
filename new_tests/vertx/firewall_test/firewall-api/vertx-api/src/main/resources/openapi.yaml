@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: API
+  description: API to tests
+  version: 1.0.0
+servers:
+  - url: https://localhost:8080
+    description: Local server for testing
+paths:
+  /health:
+    get:
+      tags:
+        - Test
+      summary: Get status
+      description: Get app status
+      operationId: health
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+              example:
+                message: Created
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+              example:
+                message: Something was wrong :(
+components:
+  schemas:
+    Result:
+      type: object
+      properties:
+        message:
+          type: string
+
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io

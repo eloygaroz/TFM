@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "api-vertx.fullname" . }}
+  labels:
+    {{- include "api-vertx.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: http-alt
+      port: 8081
+      targetPort: 8081
+      protocol: TCP
+  selector:
+    {{- include "api-vertx.selectorLabels" . | nindent 4 }}
+

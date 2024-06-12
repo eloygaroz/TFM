@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+
+  api-vertx:
+    container_name: api-vertx
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - VERTX_CONFIG_PATH=/etc/config/config.yaml
+    volumes:
+      - ./src/main/resources:/etc/config
+    entrypoint:
+      - java
+      - -jar
+      - /app/app.jar
